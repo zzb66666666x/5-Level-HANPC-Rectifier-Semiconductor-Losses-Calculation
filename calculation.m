@@ -1,4 +1,4 @@
-function [N_num1,N_num2,P_S_switch_25,P_S_conduct,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,fit_functions)
+function [N_num1,N_num2,P_S_switch_25,P_S_conduct,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
 % This is a function for calculating the loss.
 % We choose to use the SI units.
 
