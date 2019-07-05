@@ -42,10 +42,20 @@ Beta = Alpha - Gamma;
 
 
 %Below is the mode calculation part.
+t = 0:5e-7:Ts;
+Usa_ori = Usm * sin(2*pi*fs*t);
+Usb_ori = Usm * sin(2*pi*fs*t-2*pi/3);
+Usc_ori = Usm * sin(2*pi*fs*t+2*pi/3);
+Uadd = (max(Usa_ori,Usb_ori,Usc_ori)+min(Usa_ori,Usb_ori,Usc_ori))/2;
+Usa = Usa_ori - Uadd;
+Usb = Usb_ori - Uadd;
+Usc = Usc_ori - Uadd;
 
+%calculate the carrier wave
 
+[Ua1_1,Ua1_2,Ua2_1,Ua2_2] = CarrierWave(t,T_switch);
 
-
+%Output Current and Voltage
 
 
 
