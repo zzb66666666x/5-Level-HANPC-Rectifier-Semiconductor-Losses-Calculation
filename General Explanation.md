@@ -12,7 +12,8 @@
 ### 目的
 把这个sin函数转化为相应的PWM波形，也就是图四中画的。在我们实际的项目中，我们输入的不是真正的sin函数，而是加上了共模之后的sin函数，这就是输入端相对于中点的电压。
 
-![电路示意图](MarkDown&#32;Picture/General&#32;Explanation/Circuit.jpg)
+### 电路示意图
+![](MarkDown&#32;Picture/General&#32;Explanation/Circuit.jpg)
 
 ---
 
