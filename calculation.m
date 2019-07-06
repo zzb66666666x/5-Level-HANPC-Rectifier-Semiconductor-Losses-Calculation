@@ -172,11 +172,75 @@ end
 
 %Then we calculate the time of turning on and off for all the four low
 %frequency switches.They are S21, S32, S31, S22.
-Ta2_1 = (2*Ka_Value_Input(pointer)-1)*T_switch/2 - Tona_1(pointer) + T_switch/2;
-Ta3_1 = (2*Ka_Value_Input(pointer)-1)*T_switch/2 + Tona_1(pointer) + T_switch/2;
-Ta2_2 = Ka(pointer)*T_switch-Tona_1(pointer)+T_switch/2;
-Ta3_2 = Ka(pointer)*T_switch+Tona_1(pointer)+T_switch/2;
+Ta2_1 = (2*Ka_Value_Input-1)*T_switch/2 - Tona_1 + T_switch/2;
+Ta3_1 = (2*Ka_Value_Input-1)*T_switch/2 + Tona_1 + T_switch/2;
+Ta2_2 = Ka*T_switch-Tona_1 + T_switch/2;
+Ta3_2 = Ka*T_switch+Tona_1 + T_switch/2;
 %Finished calculating the time needed.
+%Intialize the I_positive and the I_negative.
+I_positive_Ta31 = t;
+I_positive_Ta32 = t;
+I_positive_Ta21 = t;
+I_positive_Ta22 = t;
+I_negative_Ta21 = t;
+I_negative_Ta22 = t;
+I_negative_Ta31 = t;
+I_negative_Ta32 = t;
+%Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
+I_temp_Ta21 = Iom*sin(2*pi*fs*Ta2_1+Beta);
+I_temp_Ta22 = Iom*sin(2*pi*fs*Ta2_2+Beta);
+I_temp_Ta31 = Iom*sin(2*pi*fs*Ta3_1+Beta);
+I_temp_Ta32 = Iom*sin(2*pi*fs*Ta3_2+Beta);
+for pointer = 1:1:length(t)
+    if I_temp_Ta21(pointer)>0
+        I_positive_Ta21(pointer) = I_temp_Ta21(pointer);
+        I_negative_Ta21(pointer) = 0;
+    elseif I_temp_Ta21(pointer)<0
+        I_positive_Ta21(pointer) = 0;
+        I_negative_Ta21(pointer) = -I_temp_Ta21(pointer);
+    end
+    if I_temp_Ta22(pointer)>0
+        I_positive_Ta22(pointer) = I_temp_Ta22(pointer);
+        I_negative_Ta22(pointer) = 0;
+    elseif I_temp_Ta22(pointer)<0
+        I_positive_Ta22(pointer) = 0;
+        I_negative_Ta22(pointer) = -I_temp_Ta22(pointer);
+    end
+    if I_temp_Ta31(pointer)>0
+        I_positive_Ta31(pointer) = I_temp_Ta31(pointer);
+        I_negative_Ta31(pointer) = 0;
+    elseif I_temp_Ta31(pointer)<0
+        I_positive_Ta31(pointer) = 0;
+        I_negative_Ta31(pointer) = -I_temp_Ta31(pointer);
+    end
+    if I_temp_Ta32(pointer)>0
+        I_positive_Ta32(pointer) = I_temp_Ta32(pointer);
+        I_negative_Ta32(pointer) = 0;
+    elseif I_temp_Ta32(pointer)<0
+        I_positive_Ta32(pointer) = 0;
+        I_negative_Ta32(pointer) = -I_temp_Ta32(pointer);
+    end
+end
+T_deno = Ts * T_switch/5e-7;
+P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
+P_S22_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta22/I_step)+1))/T_deno;
+P_S21_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta31/I_step)+1))/T_deno;
+P_S22_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta32/I_step)+1))/T_deno;
+P_S32_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta31/I_step)+1))/T_deno;
+P_S31_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta32/I_step)+1))/T_deno;
+P_S32_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta21/I_step)+1))/T_deno;
+P_S31_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta22/I_step)+1))/T_deno;
+
+P_S21_switch_25 = P_S21_Eon_25 + P_S21_Eoff_25;
+P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
+P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
+P_S31_switch_25 = P_S31_Eon_25 + P_S31_Eoff_25;
+
+
+
+
+
+
 
 
 
