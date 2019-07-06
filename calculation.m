@@ -170,6 +170,25 @@ end
 %This is the forth check point;
 %plot(t,UA);
 
+%Then we calculate the time of turning on and off for all the four low
+%frequency switches.They are S21, S32, S31, S22.
+Ta2_1 = (2*Ka_Value_Input(pointer)-1)*T_switch/2 - Tona_1(pointer) + T_switch/2;
+Ta3_1 = (2*Ka_Value_Input(pointer)-1)*T_switch/2 + Tona_1(pointer) + T_switch/2;
+Ta2_2 = Ka(pointer)*T_switch-Tona_1(pointer)+T_switch/2;
+Ta3_2 = Ka(pointer)*T_switch+Tona_1(pointer)+T_switch/2;
+%Finished calculating the time needed.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
