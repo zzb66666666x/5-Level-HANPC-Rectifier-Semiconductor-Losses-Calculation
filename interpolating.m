@@ -1,14 +1,14 @@
 function interpolating(switch_name,I_step)
+	%Defining global variables
+    global Es_on_25;
+    global Es_off_25;
+    global Vds_18;
+    global Vsd_18;
+    
     %Generating the free variable of tables
     Imax=600;%A
     m=ceil(Imax/I_step)+1;
     I_interp=linspace(0,Imax,m);
-    
-    %Defining global variables
-    global Es_on_25
-    global Es_off_25
-    global Vds_18
-    global Vsd_18
     
     %Interpolating Es_on_25
     name_Es_on_25="DATA/EON"+switch_name+".txt";
