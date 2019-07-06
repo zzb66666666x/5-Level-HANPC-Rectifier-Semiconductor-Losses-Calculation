@@ -63,7 +63,7 @@ Usc = Usc_ori - Uadd;
 
 [Ua1_1,Ua1_2,Ua2_1,Ua2_2] = CarrierWave(t,T_switch);
 %This is the second check point.
-plot(t,Ua1_2,t,Ua2_2,t,Usa);
+%plot(t,Ua1_2,t,Ua2_2,t,Usa);
 %Output Current and Voltage
 IL = Iom*sin(2*pi*fs*t+Beta);
 Uoa = Uom*sin(2*pi*fs*t-Gamma);
@@ -236,14 +236,59 @@ P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
 P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
 P_S31_switch_25 = P_S31_Eon_25 + P_S31_Eoff_25;
 
+Ta21_unique = unique(Ta2_1);
+Ta31_unique = unique(Ta3_1);
+Ta22_unique = unique(Ta2_2);
+Ta32_unique = unique(Ta3_2);
+%disp(size(Ta21_unique));
+%disp(size(Ta31_unique));
+%disp(size(Ta22_unique));
+%disp(size(Ta32_unique));
+%They are proved to have the same size.
+Ta_range = length(Ta21_unique);
+P_S21_conduct_25 = 0;
+P_S21D_conduct_25 = 0;
+P_S32_conduct_25 = 0;
+P_S32D_conduct_25 = 0;
+P_S22_conduct_25 = 0;
+P_S22D_conduct_25 = 0;
+P_S31_conduct_25 = 0;
+P_S31D_conduct_25 = 0;
 
-
-
-
-
-
-
-
+for pointer = 1:1:Ta_range
+    period1 = t((Ta21_unique(pointer)/5e-7)+1,Ta31_unique(pointer)/5e-7);
+    period2 = t((Ta22_unique(pointer)/5e-7)+1,Ta32_unique(pointer)/5e-7);
+    I_T21_31_conduct = Iom*sin(2*pi*fs*period1+Beta);
+    I_T22_32_conduct = Iom*sin(2*pi*fs*period2+Beta);
+    I_T21_31_conduct_positive = I_T21_31_conduct;
+    I_T21_31_conduct_negative = I_T21_31_conduct;
+    I_T22_32_conduct_positive = I_T22_32_conduct;
+    I_T22_32_conduct_negative = I_T22_32_conduct;
+    for pointer2 = 1:1:length(I_T21_31_conduct)
+    if I_T21_31_conduct(pointer2)>0
+        I_T21_31_conduct_positive(pointer2) = I_S21_32_conduct(pointer2);
+        I_T21_31_conduct_negative(pointer2) = 0;
+    elseif I_T21_31_conduct(pointer2)<0
+        I_T21_31_conduct_positive(pointer2) = 0;
+        I_T21_31_conduct_negative(pointer2) = -I_S21_32_conduct(pointer2);
+    end
+    end
+    for pointer3 = 1:1:length(I_T22_32_conduct)
+    if I_T22_32_conduct(pointer3)>0
+        I_T22_32_conduct_positive(pointer3) = I_S22_31_conduct(pointer3);
+        I_T22_32_conduct_negative(pointer3) = 0;
+    elseif I_T22_32_conduct(pointer3)<0
+        I_T22_32_conduct_positive(pointer3) = 0;
+        I_T22_32_conduct_negative(pointer3) = -I_S22_31_conduct(pointer3);
+    end    
+    end
+    P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*sum(I_T21_31_conduct_negative .* Vds_18(round(I_T21_31_conduct_negative/I_step)+1) * 5e-7);
+    P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*sum(I_T21_31_conduct_positive .* Vsd_18(round(I_T21_31_conduct_positive/I_step)+1) * 5e-7);
+    P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*sum(I_T22_32_conduct_negative .* Vds_18(round(I_T22_32_conduct_negative/I_step)+1) * 5e-7);
+    P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*sum(I_T22_32_conduct_positive .* Vsd_18(round(I_T22_32_conduct_positive/I_step)+1) * 5e-7);
+end
+    
+%stop here
 
 
 
