@@ -9,10 +9,10 @@ function [N_num1,N_num2,P_S_switch_25,P_S_conduct,Eta_25] = calculation(f_switch
 % current(Alpha) and a matrix of functions.
 
 %Defining global variables
-global Es_on_25
-global Es_off_25
-global Vds_18
-global Vsd_18
+global Es_on_25;
+global Es_off_25;
+global Vds_18;
+global Vsd_18;
 
 % Below is the basic information.
 fs = 50; %HZ
