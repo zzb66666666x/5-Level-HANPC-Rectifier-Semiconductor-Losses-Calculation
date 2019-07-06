@@ -85,6 +85,8 @@ Usb_ori_temp = Usm*sin(2*pi*fs*Usa_Input-2*pi/3);
 Usc_ori_temp = Usm*sin(2*pi*fs*Usa_Input+2*pi/3);
 Uadd_temp = (max(max(Usa_ori_temp,Usb_ori_temp),Usc_ori_temp)+min(min(Usa_ori_temp,Usb_ori_temp),Usc_ori_temp))/2;
 Usa_Value_Input = Usa_ori_temp-Uadd_temp;%This is a matrix of all results of Usa(Ka_1(t)*T_switch/2).
+%This is the third check point.
+%plot(t,Usa_Value_Input);
 Tona_1 = t;%Intialization
 Ka_Input = t + T_switch/2;
 Ka_Value_Input = floor(Ka_Input/T_switch);%We get the value of Ka(t+Tswitch/2).
@@ -127,7 +129,7 @@ for pointer = 1:1:length(t)
     else 
         PWMa_2_contrast_temp2 = 0;
     end
-    if TimeNow >= Ka(pointer)*T_switch/2-Tona_1(pointer)+T_switch/2 && TimeNow <= Ka(pointer)*T_switch/2+Tona_1(pointer)+T_switch/2
+    if TimeNow >= Ka(pointer)*T_switch-Tona_1(pointer)+T_switch/2 && TimeNow <= Ka(pointer)*T_switch+Tona_1(pointer)+T_switch/2
         PWMa_2_temp1 = 1;
     else
         PWMa_2_temp1 = 0;
@@ -165,10 +167,9 @@ for pointer = 1:1:length(t)
     UA(pointer) = UA_temp1 + UA_temp2 + UA_temp3 + UA_temp4;
 end
 %We finished generating the UA(t)
+%This is the forth check point;
+%plot(t,UA);
 
-%This is the third check point;
-plot(t,UA);
-%
 
 
 
