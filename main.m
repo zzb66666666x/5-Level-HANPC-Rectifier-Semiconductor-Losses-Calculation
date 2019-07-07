@@ -26,6 +26,7 @@ for i=1:1:n
     %Interpolating
     interpolating(switch_kind(i),I_step);
     %Calculating
+    Switch = switch_kind(i);
     for f_switch=900:50:3600%Hz
         for I_amplitude=1:-0.1:0.2%Percentage
             for Alpha=-10:1:10%Angle, but radian is required by calculation.m

@@ -1,4 +1,4 @@
-function [N_num1,N_num2,P_S_switch_25,P_S_conduct,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
+function [N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
 % This is a function for calculating the loss.
 % We choose to use the SI units.
 
@@ -186,6 +186,8 @@ I_negative_Ta21 = t;
 I_negative_Ta22 = t;
 I_negative_Ta31 = t;
 I_negative_Ta32 = t;
+I_positive = IL;
+I_negative = IL;
 %Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
 I_temp_Ta21 = Iom*sin(2*pi*fs*Ta2_1+Beta);
 I_temp_Ta22 = Iom*sin(2*pi*fs*Ta2_2+Beta);
@@ -220,6 +222,13 @@ for pointer = 1:1:length(t)
         I_positive_Ta32(pointer) = 0;
         I_negative_Ta32(pointer) = -I_temp_Ta32(pointer);
     end
+    if IL(pointer)>0
+        I_positive(pointer) = IL(pointer);
+        I_negative(pointer) = 0;
+    elseif IL(pointer)<0
+        I_positive(pointer) = 0;
+        I_negative(pointer) = -IL(pointer);
+    end
 end
 T_deno = Ts * T_switch/5e-7;
 P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
@@ -236,16 +245,7 @@ P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
 P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
 P_S31_switch_25 = P_S31_Eon_25 + P_S31_Eoff_25;
 
-Ta21_unique = unique(Ta2_1);
-Ta31_unique = unique(Ta3_1);
-Ta22_unique = unique(Ta2_2);
-Ta32_unique = unique(Ta3_2);
-%disp(size(Ta21_unique));
-%disp(size(Ta31_unique));
-%disp(size(Ta22_unique));
-%disp(size(Ta32_unique));
-%They are proved to have the same size.
-Ta_range = length(Ta21_unique);
+%Innitialize the conduct loss.
 P_S21_conduct_25 = 0;
 P_S21D_conduct_25 = 0;
 P_S32_conduct_25 = 0;
@@ -254,51 +254,61 @@ P_S22_conduct_25 = 0;
 P_S22D_conduct_25 = 0;
 P_S31_conduct_25 = 0;
 P_S31D_conduct_25 = 0;
+%Inititialize the loss of the low frequency region.
+P_S1Snp2_conduct_25 = 0;
+P_S1Snp2Snp1S4_switch_25 = 0;
+P_Snp1S4_conduct_25 = 0;
 
-for pointer = 1:1:Ta_range
-    period1 = t((Ta21_unique(pointer)/5e-7)+1,Ta31_unique(pointer)/5e-7);
-    period2 = t((Ta22_unique(pointer)/5e-7)+1,Ta32_unique(pointer)/5e-7);
-    I_T21_31_conduct = Iom*sin(2*pi*fs*period1+Beta);
-    I_T22_32_conduct = Iom*sin(2*pi*fs*period2+Beta);
-    I_T21_31_conduct_positive = I_T21_31_conduct;
-    I_T21_31_conduct_negative = I_T21_31_conduct;
-    I_T22_32_conduct_positive = I_T22_32_conduct;
-    I_T22_32_conduct_negative = I_T22_32_conduct;
-    for pointer2 = 1:1:length(I_T21_31_conduct)
-    if I_T21_31_conduct(pointer2)>0
-        I_T21_31_conduct_positive(pointer2) = I_S21_32_conduct(pointer2);
-        I_T21_31_conduct_negative(pointer2) = 0;
-    elseif I_T21_31_conduct(pointer2)<0
-        I_T21_31_conduct_positive(pointer2) = 0;
-        I_T21_31_conduct_negative(pointer2) = -I_S21_32_conduct(pointer2);
-    end
-    end
-    for pointer3 = 1:1:length(I_T22_32_conduct)
-    if I_T22_32_conduct(pointer3)>0
-        I_T22_32_conduct_positive(pointer3) = I_S22_31_conduct(pointer3);
-        I_T22_32_conduct_negative(pointer3) = 0;
-    elseif I_T22_32_conduct(pointer3)<0
-        I_T22_32_conduct_positive(pointer3) = 0;
-        I_T22_32_conduct_negative(pointer3) = -I_S22_31_conduct(pointer3);
-    end    
-    end
-    P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*sum(I_T21_31_conduct_negative .* Vds_18(round(I_T21_31_conduct_negative/I_step)+1) * 5e-7);
-    P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*sum(I_T21_31_conduct_positive .* Vsd_18(round(I_T21_31_conduct_positive/I_step)+1) * 5e-7);
-    P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*sum(I_T22_32_conduct_negative .* Vds_18(round(I_T22_32_conduct_negative/I_step)+1) * 5e-7);
-    P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*sum(I_T22_32_conduct_positive .* Vsd_18(round(I_T22_32_conduct_positive/I_step)+1) * 5e-7);
+for pointer = 1:1:length(t)
+   TimeNow = t(pointer);
+   if Ta2_1(pointer) <= TimeNow < Ta3_1(pointer)
+       P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
+       P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+   else
+       P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+       P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
+   end
+   if Ta2_2(pointer) <= TimeNow < Ta3_2(pointer)
+       P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
+       P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+   else
+       P_S31_conduct_25 = P_S31_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+       P_S31D_conduct_25 = P_S31D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
+   end   
+   if Usa(pointer)>=0
+       P_S1Snp2_conduct_25 = P_S1Snp2_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+   else
+       P_Snp1S4_conduct_25 = P_Snp1S4_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+   end
 end
-    
-%stop here
+if Iom*sin(Beta) >= 0
+    P_S1Snp2Snp1S4_switch_25_temp1 = Es_off_25(round(Iom*sin(Beta)/I_step)+1);
+else
+    P_S1Snp2Snp1S4_switch_25_temp1 = Es_on_25(round(-Iom*sin(Beta)/I_step)+1);
+end
+if Iom*sin(2*pi*fs*Ts/2+Beta)>=0
+    if Iom*sin(Beta) >= 0
+        I_positive_0 = Iom*sin(Beta);
+    else
+        I_positive_0 = 0;
+    end
+    P_S1Snp2Snp1S4_switch_25_temp2 = Es_on_25(round(I_positive_0/I_step)+1);
+else
+    if Iom*sin(Beta) < 0
+        I_negative_0 = -Iom*sin(Beta);
+    else
+        I_negative_0 = 0;
+    end
+    P_S1Snp2Snp1S4_switch_25_temp2 = Es_off_25(round(I_negative_0/I_step)+1);
+end
+P_S1Snp2Snp1S4_switch_25 = N_num2/Ts * (P_S1Snp2Snp1S4_switch_25_temp1 + P_S1Snp2Snp1S4_switch_25_temp2);
 
-
-
-
-
-
-
-
-
-
-
+%Get the final output
+P_S_switch_25 = P_S21_switch_25 + P_S32_switch_25 + P_S22_switch_25 + P_S31_switch_25 + P_S1Snp2Snp1S4_switch_25;
+P_S_switch_25 = 3*P_S_switch_25;
+P_S_conduct_25 = P_S21_conduct_25 + P_S21D_conduct_25 + P_S32_conduct_25 + P_S32D_conduct_25 + P_S22_conduct_25 + P_S22D_conduct_25 + P_S31_conduct_25 + P_S31D_conduct_25 + P_S1Snp2_conduct_25 + P_Snp1S4_conduct_25;
+P_S_conduct_25 = 3*P_S_conduct_25;
+P_Loss_25 = P_S_switch_25 + P_S_conduct_25;
+Eta_25 = P_Loss_25/Po;
 
 end
