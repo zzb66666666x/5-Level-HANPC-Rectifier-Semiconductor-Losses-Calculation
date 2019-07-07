@@ -2,9 +2,6 @@
 %Current ripple and DT are not considered.
 %All variables are in the form of SI Unit.
 
-clc;
-clear;
-
 %Defining global variables
 global Es_on_25;
 global Es_off_25;
