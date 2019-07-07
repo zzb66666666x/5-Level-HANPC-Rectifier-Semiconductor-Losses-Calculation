@@ -1,4 +1,4 @@
- # 5-Level-HANPC-Rectifier-Semiconductor-Losses-Calculation
+# 5-Level-HANPC-Rectifier-Semiconductor-Losses-Calculation
 ## Introduction
 This MATLAB script calculates the **semiconductor losses** of a **5-level HANPC rectifier**.
 
