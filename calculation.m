@@ -1,4 +1,4 @@
-function [N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
+function [N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
 % This is a function for calculating the loss.
 % We choose to use the SI units.
 
@@ -309,6 +309,6 @@ P_S_switch_25 = 3*P_S_switch_25;
 P_S_conduct_25 = P_S21_conduct_25 + P_S21D_conduct_25 + P_S32_conduct_25 + P_S32D_conduct_25 + P_S22_conduct_25 + P_S22D_conduct_25 + P_S31_conduct_25 + P_S31D_conduct_25 + P_S1Snp2_conduct_25 + P_Snp1S4_conduct_25;
 P_S_conduct_25 = 3*P_S_conduct_25;
 P_Loss_25 = P_S_switch_25 + P_S_conduct_25;
-Eta_25 = P_Loss_25/Po;
+Eta_25 = 1- P_Loss_25/Po;
 
 end
