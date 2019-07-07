@@ -8,12 +8,12 @@ test_I_step=0.1;%A
 device_choice = 2;
 f_switch = 600;%HZ
 I_amplitude = 1;
-Alpha = 0;
+Alpha = 0.106;
 
 %call the function
 interpolating(test_switch_kind(device_choice),test_I_step);
-[N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25]=calculation(f_switch,I_amplitude,Alpha/180*pi,test_switch_voltage(device_choice),test_I_step);
-disp([N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25]');
+[N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25]=test_calculation(f_switch,I_amplitude,Alpha/180*pi,test_switch_voltage(device_choice),test_I_step);
+disp([N_num1,N_num2,Po,P_S_switch_25/3,P_S_conduct_25/3,P_S_switch_25/3+P_S_conduct_25/3,Eta_25]');
 
 
 
