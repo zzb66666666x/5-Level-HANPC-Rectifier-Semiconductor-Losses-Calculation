@@ -1,4 +1,4 @@
-function [N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25] = test_calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
+function [N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25] = test_calculation(f_switch,switch_voltage,I_step)
 % This is a function for calculating the loss.
 % We choose to use the SI units.
 
@@ -234,14 +234,47 @@ for pointer = 1:1:length(t)
     end
 end
 T_deno = Ts * T_switch/5e-7;
-P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
-P_S22_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta22/I_step)+1))/T_deno;
-P_S21_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta31/I_step)+1))/T_deno;
-P_S22_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta32/I_step)+1))/T_deno;
-P_S32_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta31/I_step)+1))/T_deno;
-P_S31_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta32/I_step)+1))/T_deno;
-P_S32_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta21/I_step)+1))/T_deno;
-P_S31_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta22/I_step)+1))/T_deno;
+%Defining global variables
+global data_Es_on_25;
+global data_Es_off_25;
+global data_Vds_18;
+global data_Vsd_18;
+P_S21_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
+P_S22_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
+P_S21_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta31,'lienar','extrap'))/T_deno;
+P_S22_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta32,'lienar','extrap'))/T_deno;
+P_S32_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta31,'lienar','extrap'))/T_deno;
+P_S31_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta32,'lienar','extrap'))/T_deno;
+P_S32_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
+P_S31_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
+%P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
+% P_S22_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta22/I_step)+1))/T_deno;
+% P_S21_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta31/I_step)+1))/T_deno;
+% P_S22_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta32/I_step)+1))/T_deno;
+% P_S32_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta31/I_step)+1))/T_deno;
+% P_S31_Eon_25 = N_num1 * sum(Es_on_25(round(I_positive_Ta32/I_step)+1))/T_deno;
+% P_S32_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta21/I_step)+1))/T_deno;
+% P_S31_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta22/I_step)+1))/T_deno;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 P_S21_switch_25 = P_S21_Eon_25 + P_S21_Eoff_25;
 P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
