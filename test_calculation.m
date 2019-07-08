@@ -256,26 +256,6 @@ P_S31_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I
 % P_S32_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta21/I_step)+1))/T_deno;
 % P_S31_Eoff_25 = N_num1 * sum(Es_off_25(round(I_positive_Ta22/I_step)+1))/T_deno;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 P_S21_switch_25 = P_S21_Eon_25 + P_S21_Eoff_25;
 P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
 P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
@@ -298,7 +278,8 @@ P_Snp1S4_conduct_25 = 0;
 for pointer = 1:1:length(t)
    TimeNow = t(pointer);
    if Ta2_1(pointer) <= TimeNow < Ta3_1(pointer)
-       P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
+       P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
+       %P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
        P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
    else
        P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
