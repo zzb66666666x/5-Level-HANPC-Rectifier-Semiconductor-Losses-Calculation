@@ -20,7 +20,7 @@ switch_voltage=[1700,3300,1200,1700];
 I_step=0.1;%A
 Lo = 16.9e-3;%H
 %Enumerating
-for i=1:1:n %For temporary.
+for i=1:1:n 
     %Interpolating
     interpolating(switch_kind(i),I_step);
     %Calculating
