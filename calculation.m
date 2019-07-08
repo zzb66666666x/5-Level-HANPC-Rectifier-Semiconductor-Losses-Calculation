@@ -1,4 +1,4 @@
-function [N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step)
+function [N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25] = calculation(f_switch,I_amplitude,Alpha,switch_voltage,I_step,Lo)
 % This is a function for calculating the loss.
 % We choose to use the SI units.
 
@@ -23,7 +23,7 @@ f_sample = f0;
 Ulrms = 10000; %V
 Ts = 1/fs;%s
 T0 = 1/f0; %s
-Lo = 16.9e-3;%H
+
 Uprms = Ulrms/(3)^0.5;%V
 T_switch = 1/f_switch;%s
 T_sample = 1/f_sample;%s
@@ -261,14 +261,14 @@ P_Snp1S4_conduct_25 = 0;
 
 for pointer = 1:1:length(t)
    TimeNow = t(pointer);
-   if Ta2_1(pointer) <= TimeNow < Ta3_1(pointer)
+   if Ta2_1(pointer) <= TimeNow && TimeNow< Ta3_1(pointer)
        P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
        P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
    else
        P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
        P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
    end
-   if Ta2_2(pointer) <= TimeNow < Ta3_2(pointer)
+   if Ta2_2(pointer) <= TimeNow && TimeNow< Ta3_2(pointer)
        P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
        P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
    else

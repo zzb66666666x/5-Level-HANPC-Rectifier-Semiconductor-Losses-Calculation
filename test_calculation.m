@@ -277,7 +277,7 @@ P_Snp1S4_conduct_25 = 0;
 
 for pointer = 1:1:length(t)
    TimeNow = t(pointer);
-   if Ta2_1(pointer) <= TimeNow < Ta3_1(pointer)
+   if Ta2_1(pointer) <= TimeNow && TimeNow< Ta3_1(pointer)
        P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
        P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));
        %P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
@@ -288,7 +288,7 @@ for pointer = 1:1:length(t)
        %P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
        %P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
    end
-   if Ta2_2(pointer) <= TimeNow < Ta3_2(pointer)
+   if Ta2_2(pointer) <= TimeNow && TimeNow< Ta3_2(pointer)
        P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
        P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));      
        %P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));

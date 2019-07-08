@@ -11,7 +11,7 @@ f_switch = 600;%HZ
 %call the function
 test_interpolating(test_switch_kind(device_choice),test_I_step);
 %Fixed original power. Po is 2MW.
-[N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25]=test_calculation(f_switch,test_switch_voltage(device_choice),test_I_step);
+[N_num1,N_num2,Po,P_S_switch_25,P_S_conduct_25,Eta_25]=test_calculation2(f_switch,test_switch_voltage(device_choice),test_I_step);
 disp([N_num1,N_num2,Po,P_S_switch_25/3,P_S_conduct_25/3,P_S_switch_25/3+P_S_conduct_25/3,Eta_25]');
 
 
