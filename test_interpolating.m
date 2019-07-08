@@ -5,15 +5,8 @@ function test_interpolating(switch_name,I_step)
     global Es_on_25;
     global Es_off_25;
     global Vds_18;
-    global Vsd_18;
-   
-    
-    
-    
-    
-    
-    
-    
+    global Vsd_18; 
+    %Two calculating strategies.
     global data_Es_on_25;
     global data_Es_off_25;
     global data_Vds_18;
@@ -30,13 +23,13 @@ function test_interpolating(switch_name,I_step)
     %Saving results
     %dlmwrite("Interpolation/EON"+switch_name+".txt",1e3*Es_on_25');
     %Plotting
-%     figure();
-%     plot(data_Es_on_25(:,1),data_Es_on_25(:,2),'or',I_interp,Es_on_25*1e3,'-b');
-%     grid on;
-%     grid minor;
-%     title("EON"+switch_name+"(Istep="+num2str(I_step)+"A)");
-%     xlabel("I (A)");
-%     ylabel("E (mJ)");
+%    figure();
+%    plot(data_Es_on_25(:,1),data_Es_on_25(:,2),'or',I_interp,Es_on_25*1e3,'-b');
+%    grid on;
+%    grid minor;
+%    title("EON"+switch_name+"(Istep="+num2str(I_step)+"A)");
+%    xlabel("I (A)");
+%    ylabel("E (mJ)");
     %saveas(gcf,"Interpolation/EON"+switch_name+".jpg");
     
     %Interpolating Es_off_25
@@ -46,13 +39,13 @@ function test_interpolating(switch_name,I_step)
     %Saving results
     %dlmwrite("Interpolation/EOFF"+switch_name+".txt",1e3*Es_off_25');
     %Plotting
-    figure();
-    plot(data_Es_off_25(:,1),data_Es_off_25(:,2),'or',I_interp,Es_off_25*1e3,'-b');
-    grid on;
-    grid minor;
-    title("EOFF"+switch_name+"(Istep="+num2str(I_step)+"A)");
-    xlabel("I (A)");
-    ylabel("E (mJ)");
+%   figure();
+%   plot(data_Es_off_25(:,1),data_Es_off_25(:,2),'or',I_interp,Es_off_25*1e3,'-b');
+%   grid on;
+%   grid minor;
+%   title("EOFF"+switch_name+"(Istep="+num2str(I_step)+"A)");
+%   xlabel("I (A)");
+%   ylabel("E (mJ)");
     %saveas(gcf,"Interpolation/EOFF"+switch_name+".jpg");
     
     %Interpolating Vds_18
