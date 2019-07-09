@@ -16,7 +16,7 @@ function test_interpolating(switch_name)
     %Interpolating Es_on_25
     name_Es_on_25="DATA/EON"+switch_name+".txt";
     data_Es_on_25=importdata(name_Es_on_25);%First column, I, A; Second column, E, mJ
-    Es_on_25=interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_interp,'lienar','extrap');
+    Es_on_25=interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_interp,'linear','extrap');
     %Saving results
     %dlmwrite("Interpolation/EON"+switch_name+".txt",1e3*Es_on_25');
     %Plotting

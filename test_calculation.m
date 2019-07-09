@@ -140,14 +140,14 @@ I_negative=max(-IL,0);
 
 T_deno = Ts * T_switch/5e-7;
 
-P_S21_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
-P_S22_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
-P_S21_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta31,'lienar','extrap'))/T_deno;
-P_S22_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta32,'lienar','extrap'))/T_deno;
-P_S32_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta31,'lienar','extrap'))/T_deno;
-P_S31_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta32,'lienar','extrap'))/T_deno;
-P_S32_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
-P_S31_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
+P_S21_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta21,'linear','extrap'))/T_deno;
+P_S22_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta22,'linear','extrap'))/T_deno;
+P_S21_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta31,'linear','extrap'))/T_deno;
+P_S22_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta32,'linear','extrap'))/T_deno;
+P_S32_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta31,'linear','extrap'))/T_deno;
+P_S31_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta32,'linear','extrap'))/T_deno;
+P_S32_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta21,'linear','extrap'))/T_deno;
+P_S31_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta22,'linear','extrap'))/T_deno;
 
 P_S21_switch_25 = P_S21_Eon_25 + P_S21_Eoff_25;
 P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
@@ -155,27 +155,27 @@ P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
 P_S31_switch_25 = P_S31_Eon_25 + P_S31_Eoff_25;
 
 %conduct loss.
-P_S21_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap'))));
-P_S21D_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
-P_S32_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
-P_S32D_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap'))));
-P_S22_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap'))));
-P_S22D_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
-P_S31_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
-P_S31D_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap'))));
-P_S1Snp2_conduct_25=sum((Usa>=0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
-P_Snp1S4_conduct_25=sum((Usa<0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
+P_S21_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'linear','extrap'))));
+P_S21D_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'linear','extrap'))));
+P_S32_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'linear','extrap'))));
+P_S32D_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'linear','extrap'))));
+P_S22_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'linear','extrap'))));
+P_S22D_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'linear','extrap'))));
+P_S31_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'linear','extrap'))));
+P_S31D_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'linear','extrap'))));
+P_S1Snp2_conduct_25=sum((Usa>=0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'linear','extrap')+I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'linear','extrap'))));
+P_Snp1S4_conduct_25=sum((Usa<0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'linear','extrap')+I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'linear','extrap'))));
 
 IL_0=Iom*sin(Beta);
 if IL_0 >= 0
-    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,IL_0,'lienar','extrap');
+    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,IL_0,'linear','extrap');
 else
-    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,-IL_0,'lienar','extrap');
+    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,-IL_0,'linear','extrap');
 end
 if Iom*sin(2*pi*fs*Ts/2+Beta)>=0
-    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,max(IL_0,0),'lienar','extrap');
+    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,max(IL_0,0),'linear','extrap');
 else
-    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,max(-IL_0,0),'lienar','extrap');
+    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,max(-IL_0,0),'linear','extrap');
 end
 P_S1Snp2Snp1S4_switch_25 = N_num2/Ts * (P_S1Snp2Snp1S4_switch_25_temp1 + P_S1Snp2Snp1S4_switch_25_temp2);
 
