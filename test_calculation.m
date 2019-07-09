@@ -64,7 +64,35 @@ Usc = Usc_ori - Uadd;
 %plot(t,Usa);
 %calculate the carrier wave
 
-[Ua1_1,Ua1_2,Ua2_1,Ua2_2] = CarrierWave(t,T_switch);
+%[Ua1_1,Ua1_2,Ua2_1,Ua2_2] = CarrierWave(t,T_switch);
+% Ua1_1 = t;
+% Ua1_2 = t;
+% Ua2_1 = t;
+% Ua2_2 = t;
+% t_range = length(t);
+% for i = 1:1:t_range
+%    time = mod(t(i),T_switch);
+%    if time>=0 && time< T_switch/2
+%        temp1 = (2*Uam*time/T_switch);
+%        temp2 = (-2*Uam*time/T_switch+Uam);
+%        Ua1_1(i) = temp1;
+%        Ua1_2(i) = temp2;
+%        Ua2_1(i) = temp1 - Uam;
+%        Ua2_2(i) = temp2 - Uam;
+%    elseif time>=T_switch/2 && time<T_switch
+%        temp1 = (-2*Uam*(time-T_switch/2)/T_switch) + Uam;
+%        temp2 = (2*Uam*(time-T_switch/2)/T_switch); 
+%        Ua1_1(i) = temp1;
+%        Ua2_1(i) = temp1 - Uam;
+%        Ua1_2(i) = temp2;
+%        Ua2_2(i) = temp2 - Uam;
+%    end
+% end
+time=mod(t,T_switch);
+Ua1_1=(time<T_switch/2).*(2*Uam*time/T_switch)+(time>=T_switch/2).*((-2*Uam*(time-T_switch/2)/T_switch)+Uam);
+Ua2_1=Ua1_1-Uam;
+Ua1_2=(time<T_switch/2).*(-2*Uam*time/T_switch+Uam)+(time>=T_switch/2).*(2*Uam*(time-T_switch/2)/T_switch);
+Ua2_2=Ua1_2-Uam;
 %This is the second check point.
 %plot(t,Ua1_2,t,Ua2_2,t,Usa);
 %Output Current and Voltage
@@ -94,13 +122,14 @@ Tona_1 = t;%Intialization
 Ka_Input = t + T_switch/2;
 Ka_Value_Input = floor(Ka_Input/T_switch);%We get the value of Ka(t+Tswitch/2).
 %Generate the Tona_1
-for pointer = 1:1:length(t) 
-    if Usa(pointer)>=0
-        Tona_1(pointer)=abs((T_switch*Usa_Value_Input(pointer))/(2*Uam));
-    else 
-        Tona_1(pointer)=T_switch/2 - abs((T_switch*Usa_Value_Input(pointer))/(2*Uam));
-    end 
-end
+% for pointer = 1:1:length(t) 
+%     if Usa(pointer)>=0
+%         Tona_1(pointer)=abs((T_switch*Usa_Value_Input(pointer))/(2*Uam));
+%     else 
+%         Tona_1(pointer)=T_switch/2 - abs((T_switch*Usa_Value_Input(pointer))/(2*Uam));
+%     end 
+% end
+Tona_1=(Usa>=0).*abs((T_switch*Usa_Value_Input)/(2*Uam))+(Usa<0).*(T_switch/2-abs((T_switch*Usa_Value_Input)/(2*Uam)));
 PWMa_1_contrast=t;%Initialization
 PWMa_1=t;
 PWMa_2_contrast=t;
