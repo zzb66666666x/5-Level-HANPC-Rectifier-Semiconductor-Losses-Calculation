@@ -350,27 +350,30 @@ P_S31D_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_negative*5e-7.*in
 P_S1Snp2_conduct_25=sum((Usa>=0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
 P_Snp1S4_conduct_25=sum((Usa<0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
 
-if Iom*sin(Beta) >= 0
-    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,Iom*sin(Beta),'lienar','extrap');
+IL_0=Iom*sin(Beta);
+if IL_0 >= 0
+    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,IL_0,'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp1 = Es_off_25(round(Iom*sin(Beta)/I_step)+1);
 else
-    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,-Iom*sin(Beta),'lienar','extrap');
+    P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,-IL_0,'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp1 = Es_on_25(round(-Iom*sin(Beta)/I_step)+1);
 end
 if Iom*sin(2*pi*fs*Ts/2+Beta)>=0
-    if Iom*sin(Beta) >= 0
-        I_positive_0 = Iom*sin(Beta);
-    else
-        I_positive_0 = 0;
-    end
+%     if Iom*sin(Beta) >= 0
+%         I_positive_0 = Iom*sin(Beta);
+%     else
+%         I_positive_0 = 0;
+%     end
+    I_positive_0=max(IL_0,0);
     P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_positive_0,'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp2 = Es_on_25(round(I_positive_0/I_step)+1);
 else
-    if Iom*sin(Beta) < 0
-        I_negative_0 = -Iom*sin(Beta);
-    else
-        I_negative_0 = 0;
-    end
+%     if Iom*sin(Beta) < 0
+%         I_negative_0 = -Iom*sin(Beta);
+%     else
+%         I_negative_0 = 0;
+%     end
+    I_negative_0=max(-IL_0,0);
     P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_0,'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp2 = Es_off_25(round(I_negative_0/I_step)+1);
 end
