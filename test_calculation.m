@@ -364,8 +364,8 @@ if Iom*sin(2*pi*fs*Ts/2+Beta)>=0
 %     else
 %         I_positive_0 = 0;
 %     end
-    I_positive_0=max(IL_0,0);
-    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_positive_0,'lienar','extrap');
+%     I_positive_0=max(IL_0,0);
+    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,max(IL_0,0),'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp2 = Es_on_25(round(I_positive_0/I_step)+1);
 else
 %     if Iom*sin(Beta) < 0
@@ -373,8 +373,8 @@ else
 %     else
 %         I_negative_0 = 0;
 %     end
-    I_negative_0=max(-IL_0,0);
-    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_0,'lienar','extrap');
+%     I_negative_0=max(-IL_0,0);
+    P_S1Snp2Snp1S4_switch_25_temp2 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,max(-IL_0,0),'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp2 = Es_off_25(round(I_negative_0/I_step)+1);
 end
 P_S1Snp2Snp1S4_switch_25 = N_num2/Ts * (P_S1Snp2Snp1S4_switch_25_temp1 + P_S1Snp2Snp1S4_switch_25_temp2);
