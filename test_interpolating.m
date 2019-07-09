@@ -1,16 +1,16 @@
 function test_interpolating(switch_name,I_step)
     %set(0,'DefaultFigureVisible','off');
     
-    %Defining global variables
-     global Es_on_25;
-     global Es_off_25;
-     global Vds_18;
-     global Vsd_18; 
+	%Defining global variables
+	global Es_on_25;
+	global Es_off_25;
+	global Vds_18;
+	global Vsd_18; 
     %Two calculating strategies.
-%    global data_Es_on_25;
-%    global data_Es_off_25;
-%    global data_Vds_18;
-%    global data_Vsd_18;
+    global data_Es_on_25;
+    global data_Es_off_25;
+    global data_Vds_18;
+    global data_Vsd_18;
     %Generating the free variable of tables
     Imax=600;%A
     m=ceil(Imax/I_step)+1;
@@ -19,7 +19,7 @@ function test_interpolating(switch_name,I_step)
     %Interpolating Es_on_25
     name_Es_on_25="DATA/EON"+switch_name+".txt";
     data_Es_on_25=importdata(name_Es_on_25);%First column, I, A; Second column, E, mJ
-     Es_on_25=interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_interp,'lienar','extrap');
+    Es_on_25=interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_interp,'lienar','extrap');
     %Saving results
     %dlmwrite("Interpolation/EON"+switch_name+".txt",1e3*Es_on_25');
     %Plotting
