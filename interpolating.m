@@ -1,14 +1,15 @@
-function interpolating(switch_name,I_step)
+function interpolating(switch_name)
+    %To show the reliability of interpolating, 
     set(0,'DefaultFigureVisible','off');
     
-    %Defining global variables
-    global Es_on_25;
-    global Es_off_25;
-    global Vds_18;
-    global Vsd_18;
-    
+	%Defining global variables
+    global data_Es_on_25;
+    global data_Es_off_25;
+    global data_Vds_18;
+    global data_Vsd_18;
     %Generating the free variable of tables
     Imax=600;%A
+    I_step=0.1;%A
     m=ceil(Imax/I_step)+1;
     I_interp=linspace(0,Imax,m);
     
@@ -76,5 +77,5 @@ function interpolating(switch_name,I_step)
     %ylabel("V (V)");
     %saveas(gcf,"Interpolation/VSD"+switch_name+".jpg")
     
-    set(0,'DefaultFigureVisible','on');
+    %set(0,'DefaultFigureVisible','on');
 end
