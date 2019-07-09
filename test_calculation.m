@@ -217,59 +217,69 @@ Ta3_1 = (2*Ka_Value_Input-1)*T_switch/2 + Tona_1 + T_switch/2;
 Ta2_2 = Ka*T_switch-Tona_1 + T_switch/2;
 Ta3_2 = Ka*T_switch+Tona_1 + T_switch/2;
 %Finished calculating the time needed.
+%Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
 I_temp_Ta21 = Iom*sin(2*pi*fs*Ta2_1+Beta);
 I_temp_Ta22 = Iom*sin(2*pi*fs*Ta2_2+Beta);
 I_temp_Ta31 = Iom*sin(2*pi*fs*Ta3_1+Beta);
 I_temp_Ta32 = Iom*sin(2*pi*fs*Ta3_2+Beta);
-%Intialize the I_positive and the I_negative.
-I_positive_Ta31 = I_temp_Ta31;
-I_positive_Ta32 = I_temp_Ta32;
-I_positive_Ta21 = I_temp_Ta21;
-I_positive_Ta22 = I_temp_Ta22;
-I_negative_Ta21 = I_temp_Ta21;
-I_negative_Ta22 = I_temp_Ta22;
-I_negative_Ta31 = I_temp_Ta31;
-I_negative_Ta32 = I_temp_Ta32;
-I_positive = IL;
-I_negative = IL;
-%Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
-for pointer = 1:1:length(t)
-    if I_temp_Ta21(pointer)>0
-        I_positive_Ta21(pointer) = I_temp_Ta21(pointer);
-        I_negative_Ta21(pointer) = 0;
-    elseif I_temp_Ta21(pointer)<0
-        I_positive_Ta21(pointer) = 0;
-        I_negative_Ta21(pointer) = -I_temp_Ta21(pointer);
-    end
-    if I_temp_Ta22(pointer)>0
-        I_positive_Ta22(pointer) = I_temp_Ta22(pointer);
-        I_negative_Ta22(pointer) = 0;
-    elseif I_temp_Ta22(pointer)<0
-        I_positive_Ta22(pointer) = 0;
-        I_negative_Ta22(pointer) = -I_temp_Ta22(pointer);
-    end
-    if I_temp_Ta31(pointer)>0
-        I_positive_Ta31(pointer) = I_temp_Ta31(pointer);
-        I_negative_Ta31(pointer) = 0;
-    elseif I_temp_Ta31(pointer)<0
-        I_positive_Ta31(pointer) = 0;
-        I_negative_Ta31(pointer) = -I_temp_Ta31(pointer);
-    end
-    if I_temp_Ta32(pointer)>0
-        I_positive_Ta32(pointer) = I_temp_Ta32(pointer);
-        I_negative_Ta32(pointer) = 0;
-    elseif I_temp_Ta32(pointer)<0
-        I_positive_Ta32(pointer) = 0;
-        I_negative_Ta32(pointer) = -I_temp_Ta32(pointer);
-    end
-    if IL(pointer)>0
-        I_positive(pointer) = IL(pointer);
-        I_negative(pointer) = 0;
-    elseif IL(pointer)<0
-        I_positive(pointer) = 0;
-        I_negative(pointer) = -IL(pointer);
-    end
-end
+% %Intialize the I_positive and the I_negative.
+% I_positive_Ta31 = I_temp_Ta31;
+% I_positive_Ta32 = I_temp_Ta32;
+% I_positive_Ta21 = I_temp_Ta21;
+% I_positive_Ta22 = I_temp_Ta22;
+% I_negative_Ta21 = I_temp_Ta21;
+% I_negative_Ta22 = I_temp_Ta22;
+% I_negative_Ta31 = I_temp_Ta31;
+% I_negative_Ta32 = I_temp_Ta32;
+% I_positive = IL;
+% I_negative = IL;
+% for pointer = 1:1:length(t)
+%     if I_temp_Ta21(pointer)>0
+%         I_positive_Ta21(pointer) = I_temp_Ta21(pointer);
+%         I_negative_Ta21(pointer) = 0;
+%     elseif I_temp_Ta21(pointer)<0
+%         I_positive_Ta21(pointer) = 0;
+%         I_negative_Ta21(pointer) = -I_temp_Ta21(pointer);
+%     end
+%     if I_temp_Ta22(pointer)>0
+%         I_positive_Ta22(pointer) = I_temp_Ta22(pointer);
+%         I_negative_Ta22(pointer) = 0;
+%     elseif I_temp_Ta22(pointer)<0
+%         I_positive_Ta22(pointer) = 0;
+%         I_negative_Ta22(pointer) = -I_temp_Ta22(pointer);
+%     end
+%     if I_temp_Ta31(pointer)>0
+%         I_positive_Ta31(pointer) = I_temp_Ta31(pointer);
+%         I_negative_Ta31(pointer) = 0;
+%     elseif I_temp_Ta31(pointer)<0
+%         I_positive_Ta31(pointer) = 0;
+%         I_negative_Ta31(pointer) = -I_temp_Ta31(pointer);
+%     end
+%     if I_temp_Ta32(pointer)>0
+%         I_positive_Ta32(pointer) = I_temp_Ta32(pointer);
+%         I_negative_Ta32(pointer) = 0;
+%     elseif I_temp_Ta32(pointer)<0
+%         I_positive_Ta32(pointer) = 0;
+%         I_negative_Ta32(pointer) = -I_temp_Ta32(pointer);
+%     end
+%     if IL(pointer)>0
+%         I_positive(pointer) = IL(pointer);
+%         I_negative(pointer) = 0;
+%     elseif IL(pointer)<0
+%         I_positive(pointer) = 0;
+%         I_negative(pointer) = -IL(pointer);
+%     end
+% end
+I_positive_Ta21=max(I_temp_Ta21,0);
+I_negative_Ta21=max(-I_temp_Ta21,0);
+I_positive_Ta22=max(I_temp_Ta22,0);
+I_negative_Ta22=max(-I_temp_Ta22,0);
+I_positive_Ta31=max(I_temp_Ta31,0);
+I_negative_Ta31=max(-I_temp_Ta31,0);
+I_positive_Ta32=max(I_temp_Ta32,0);
+I_negative_Ta32=max(-I_temp_Ta32,0);
+I_positive=max(IL,0);
+I_negative=max(-IL,0);
 
 T_deno = Ts * T_switch/5e-7;
 
