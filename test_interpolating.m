@@ -1,18 +1,15 @@
-function test_interpolating(switch_name,I_step)
-    %set(0,'DefaultFigureVisible','off');
+function test_interpolating(switch_name)
+    %To show the reliability of interpolating, 
+    set(0,'DefaultFigureVisible','off');
     
 	%Defining global variables
-	global Es_on_25;
-	global Es_off_25;
-	global Vds_18;
-	global Vsd_18; 
-    %Two calculating strategies.
     global data_Es_on_25;
     global data_Es_off_25;
     global data_Vds_18;
     global data_Vsd_18;
     %Generating the free variable of tables
     Imax=600;%A
+    I_step=0.1;%A
     m=ceil(Imax/I_step)+1;
     I_interp=linspace(0,Imax,m);
     
@@ -23,29 +20,29 @@ function test_interpolating(switch_name,I_step)
     %Saving results
     %dlmwrite("Interpolation/EON"+switch_name+".txt",1e3*Es_on_25');
     %Plotting
-%    figure();
-%    plot(data_Es_on_25(:,1),data_Es_on_25(:,2),'or',I_interp,Es_on_25*1e3,'-b');
-%    grid on;
-%    grid minor;
-%    title("EON"+switch_name+"(Istep="+num2str(I_step)+"A)");
-%    xlabel("I (A)");
-%    ylabel("E (mJ)");
+    %figure();
+    %plot(data_Es_on_25(:,1),data_Es_on_25(:,2),'or',I_interp,Es_on_25*1e3,'-b');
+    %grid on;
+    %grid minor;
+    %title("EON"+switch_name+"(Istep="+num2str(I_step)+"A)");
+    %xlabel("I (A)");
+    %ylabel("E (mJ)");
     %saveas(gcf,"Interpolation/EON"+switch_name+".jpg");
     
     %Interpolating Es_off_25
     name_Es_off_25="DATA/EOFF"+switch_name+".txt";
     data_Es_off_25=importdata(name_Es_off_25);%First column, I, A; Second column, E, mJ
-   Es_off_25=interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_interp,'linear','extrap');
+    Es_off_25=interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_interp,'linear','extrap');
     %Saving results
     %dlmwrite("Interpolation/EOFF"+switch_name+".txt",1e3*Es_off_25');
     %Plotting
-%   figure();
-%   plot(data_Es_off_25(:,1),data_Es_off_25(:,2),'or',I_interp,Es_off_25*1e3,'-b');
-%   grid on;
-%   grid minor;
-%   title("EOFF"+switch_name+"(Istep="+num2str(I_step)+"A)");
-%   xlabel("I (A)");
-%   ylabel("E (mJ)");
+    %figure();
+    %plot(data_Es_off_25(:,1),data_Es_off_25(:,2),'or',I_interp,Es_off_25*1e3,'-b');
+    %grid on;
+    %grid minor;
+    %title("EOFF"+switch_name+"(Istep="+num2str(I_step)+"A)");
+    %xlabel("I (A)");
+    %ylabel("E (mJ)");
     %saveas(gcf,"Interpolation/EOFF"+switch_name+".jpg");
     
     %Interpolating Vds_18
