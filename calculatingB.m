@@ -1,8 +1,9 @@
-function [Po,N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25]=calculationA(Lo,f_switch,I_amplitude,Alpha,switch_voltage)
+function [Iorms,Alpha,N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25]=calculatingB(f_switch,Lo,Po,switch_voltage)
 %This function calculates the semiconductor losses of a 5-level HANPC rectifier for a specific case.
 %Current ripple and DT are not considered.
+%Linear method is used for interpolation.
 %All variables are in the form of SI Units.
-%For version A, free variables includes switch_kind (switch_voltage), Lo, f_switch, I_amplitude and Alpha.
+%For version B, free variables includes switch_kind (switch_voltage), Lo, f_switch and Po.
 
 %Defining global variables
 global data_Es_on_25;
@@ -28,16 +29,16 @@ N_num1=ceil((V_bus*1.5*0.25)/switch_voltage);%The number of high frequency switc
 N_num2=ceil((V_bus*1.5*0.5)/switch_voltage);%The number of low frequency switches in the left of topology; Input switch_voltage (V)
 Upm=Uprms*(2)^0.5;
 Ud=V_bus/2;
-Iorms=115.47*I_amplitude;%A; Input I_amplitude (proportion in decimal)
+Iorms=Po/((3)^0.5*Ulrms);%A; Input Po (W)
 Uorms=(Uprms^2+(2*pi*fs*Iorms*Lo)^2)^0.5;
-Po=3*Uorms*Iorms*cos(Alpha);%W; Input Alpha (radian)
+%Input Po (W)
 PF=1;
 Uom=Uorms*(2)^0.5;
 Uam=1;%V
 ma=Uom/Ud;
 Usm=Uam*ma;
 Iom=(2)^0.5*Iorms;
-%Input Alpha (radian)
+Alpha=atan(2*pi*fs*Iorms*Lo/Uprms);
 Gamma=(fs*2*pi)/(f_sample*2);
 Beta=Alpha-Gamma;
 %NO DT

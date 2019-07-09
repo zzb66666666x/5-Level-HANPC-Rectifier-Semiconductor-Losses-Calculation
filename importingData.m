@@ -1,7 +1,8 @@
 function importingData(switch_name)
     %This function imports data for interpolation.
-    %To show the reliability of interpolating, remove all percentage signs (%) in the front of the annotated code.
-    
+    %Linear method is used for interpolation.
+    %To show the reliability of interpolation, remove all percentage signs (%) in the front of the annotated code.
+
     %Configuring settings to save figures automatically without displaying
 %     set(0,'DefaultFigureVisible','off');
     
