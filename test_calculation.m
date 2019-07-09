@@ -118,7 +118,7 @@ Uadd_temp = (max(max(Usa_ori_temp,Usb_ori_temp),Usc_ori_temp)+min(min(Usa_ori_te
 Usa_Value_Input = Usa_ori_temp-Uadd_temp;%This is a matrix of all results of Usa(Ka_1(t)*T_switch/2).
 %This is the third check point.
 %plot(t,Usa_Value_Input);
-Tona_1 = t;%Intialization
+%Tona_1 = t;%Intialization
 Ka_Input = t + T_switch/2;
 Ka_Value_Input = floor(Ka_Input/T_switch);%We get the value of Ka(t+Tswitch/2).
 %Generate the Tona_1
