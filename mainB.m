@@ -27,7 +27,7 @@ for i=1:1:n
     importingData(switch_kind(i));
     %Calculating
     for f_switch=900:50:3600%Hz
-        for Po=0.6:0.2:2%W
+        for Po=0.6e6:0.2e6:2e6%W
             [Iorms,Alpha,N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25]=calculatingB(f_switch,Lo,Po,switch_voltage(i));
             fprintf(file,"%s,%f,%d,%f,%f,%f,%d,%d,%f,%f,%f,\r\n",switch_kind(i),Lo,f_switch,Po,Iorms,Alpha,N_num1,N_num2,P_S_switch_25,P_S_conduct_25,Eta_25);
         end
