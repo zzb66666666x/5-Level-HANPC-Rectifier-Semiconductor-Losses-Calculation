@@ -262,12 +262,15 @@ for pointer = 1:1:length(t)
         I_negative(pointer) = -IL(pointer);
     end
 end
+
 T_deno = Ts * T_switch/5e-7;
+
 %Defining global variables
 global data_Es_on_25;
 global data_Es_off_25;
 global data_Vds_18;
 global data_Vsd_18;
+
 P_S21_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
 P_S22_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
 P_S21_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta31,'lienar','extrap'))/T_deno;
@@ -276,7 +279,7 @@ P_S32_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_ne
 P_S31_Eon_25=N_num1 * sum(interp1(data_Es_on_25(:,1),data_Es_on_25(:,2)/1e3,I_negative_Ta32,'lienar','extrap'))/T_deno;
 P_S32_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta21,'lienar','extrap'))/T_deno;
 P_S31_Eoff_25=N_num1 * sum(interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,I_negative_Ta22,'lienar','extrap'))/T_deno;
-%P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
+% P_S21_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta21/I_step)+1))/T_deno;
 % P_S22_Eon_25 = N_num1 * sum(Es_on_25(round(I_negative_Ta22/I_step)+1))/T_deno;
 % P_S21_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta31/I_step)+1))/T_deno;
 % P_S22_Eoff_25 = N_num1 * sum(Es_off_25(round(I_negative_Ta32/I_step)+1))/T_deno;
@@ -290,52 +293,63 @@ P_S32_switch_25 = P_S32_Eon_25 + P_S32_Eoff_25;
 P_S22_switch_25 = P_S22_Eon_25 + P_S22_Eoff_25;
 P_S31_switch_25 = P_S31_Eon_25 + P_S31_Eoff_25;
 
-%Innitialize the conduct loss.
-P_S21_conduct_25 = 0;
-P_S21D_conduct_25 = 0;
-P_S32_conduct_25 = 0;
-P_S32D_conduct_25 = 0;
-P_S22_conduct_25 = 0;
-P_S22D_conduct_25 = 0;
-P_S31_conduct_25 = 0;
-P_S31D_conduct_25 = 0;
-%Inititialize the loss of the low frequency region.
-P_S1Snp2_conduct_25 = 0;
-P_S1Snp2Snp1S4_switch_25 = 0;
-P_Snp1S4_conduct_25 = 0;
+% %Innitialize the conduct loss.
+% P_S21_conduct_25 = 0;
+% P_S21D_conduct_25 = 0;
+% P_S32_conduct_25 = 0;
+% P_S32D_conduct_25 = 0;
+% P_S22_conduct_25 = 0;
+% P_S22D_conduct_25 = 0;
+% P_S31_conduct_25 = 0;
+% P_S31D_conduct_25 = 0;
+% %Inititialize the loss of the low frequency region.
+% P_S1Snp2_conduct_25 = 0;
+% P_S1Snp2Snp1S4_switch_25 = 0;
+% P_Snp1S4_conduct_25 = 0;
 
-for pointer = 1:1:length(t)
-   TimeNow = t(pointer);
-   if Ta2_1(pointer) <= TimeNow && TimeNow< Ta3_1(pointer)
-       P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
-       P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));
-       %P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
-       %P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
-   else
-       P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
-       P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap'));
-       %P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
-       %P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
-   end
-   if Ta2_2(pointer) <= TimeNow && TimeNow< Ta3_2(pointer)
-       P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
-       P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));      
-       %P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
-       %P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
-   else
-       P_S31_conduct_25 = P_S31_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
-       P_S31D_conduct_25 = P_S31D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap'));
-       %P_S31_conduct_25 = P_S31_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
-       %P_S31D_conduct_25 = P_S31D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
-   end   
-   if Usa(pointer)>=0
-       P_S1Snp2_conduct_25 = P_S1Snp2_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap')+I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));
-       %P_S1Snp2_conduct_25 = P_S1Snp2_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
-   else
-       P_Snp1S4_conduct_25 = P_Snp1S4_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap')+I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
-       %P_Snp1S4_conduct_25 = P_Snp1S4_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
-   end
-end
+% for pointer = 1:1:length(t)
+%    TimeNow = t(pointer);
+%    if Ta2_1(pointer) <= TimeNow && TimeNow< Ta3_1(pointer)
+%        P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
+%        P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));
+%        %P_S21_conduct_25 = P_S21_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
+%        %P_S21D_conduct_25 = P_S21D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+%    else
+%        P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
+%        P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap'));
+%        %P_S32_conduct_25 = P_S32_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+%        %P_S32D_conduct_25 = P_S32D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
+%    end
+%    if Ta2_2(pointer) <= TimeNow && TimeNow< Ta3_2(pointer)
+%        P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap'));
+%        P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));      
+%        %P_S22_conduct_25 = P_S22_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1));
+%        %P_S22D_conduct_25 = P_S22D_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+%    else
+%        P_S31_conduct_25 = P_S31_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
+%        P_S31D_conduct_25 = P_S31D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap'));
+%        %P_S31_conduct_25 = P_S31_conduct_25 + fs*N_num1*(I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+%        %P_S31D_conduct_25 = P_S31D_conduct_25 + fs*N_num1*(I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1));       
+%    end   
+%    if Usa(pointer)>=0
+%        P_S1Snp2_conduct_25 = P_S1Snp2_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative(pointer),'lienar','extrap')+I_positive(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive(pointer),'lienar','extrap'));
+%        %P_S1Snp2_conduct_25 = P_S1Snp2_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vds_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vsd_18(round(I_positive(pointer)/I_step)+1));
+%    else
+%        P_Snp1S4_conduct_25 = P_Snp1S4_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative(pointer),'lienar','extrap')+I_positive(pointer)*5e-7*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive(pointer),'lienar','extrap'));
+%        %P_Snp1S4_conduct_25 = P_Snp1S4_conduct_25 + fs*N_num2 * (I_negative(pointer)*5e-7*Vsd_18(round(I_negative(pointer)/I_step)+1)+I_positive(pointer)*5e-7*Vds_18(round(I_positive(pointer)/I_step)+1));
+%    end
+% end
+P_S21_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap'))));
+P_S21D_conduct_25=sum(((Ta2_1<=t)&(t<Ta3_1)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
+P_S32_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
+P_S32D_conduct_25=sum((~((Ta2_1<=t)&(t<Ta3_1))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap'))));
+P_S22_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap'))));
+P_S22D_conduct_25=sum(((Ta2_2<=t)&(t<Ta3_2)).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
+P_S31_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
+P_S31D_conduct_25=sum((~((Ta2_2<=t)&(t<Ta3_2))).*(fs*N_num1*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap'))));
+P_S1Snp2_conduct_25=sum((Usa>=0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_positive,'lienar','extrap'))));
+P_Snp1S4_conduct_25=sum((Usa<0).*(fs*N_num2*(I_negative*5e-7.*interp1(data_Vsd_18(:,1),data_Vsd_18(:,2),I_negative,'lienar','extrap')+I_positive*5e-7.*interp1(data_Vds_18(:,1),data_Vds_18(:,2),I_positive,'lienar','extrap'))));
+
 if Iom*sin(Beta) >= 0
     P_S1Snp2Snp1S4_switch_25_temp1 = interp1(data_Es_off_25(:,1),data_Es_off_25(:,2)/1e3,Iom*sin(Beta),'lienar','extrap');
     %P_S1Snp2Snp1S4_switch_25_temp1 = Es_off_25(round(Iom*sin(Beta)/I_step)+1);
