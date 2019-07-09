@@ -62,8 +62,8 @@ Usb = Usb_ori - Uadd;
 Usc = Usc_ori - Uadd;
 %This is the first check point.
 %plot(t,Usa);
-%calculate the carrier wave
 
+%calculate the carrier wave
 %[Ua1_1,Ua1_2,Ua2_1,Ua2_2] = CarrierWave(t,T_switch);
 % Ua1_1 = t;
 % Ua1_2 = t;
@@ -95,6 +95,7 @@ Ua1_2=(time<T_switch/2).*(-2*Uam*time/T_switch+Uam)+(time>=T_switch/2).*(2*Uam*(
 Ua2_2=Ua1_2-Uam;
 %This is the second check point.
 %plot(t,Ua1_2,t,Ua2_2,t,Usa);
+
 %Output Current and Voltage
 IL = Iom*sin(2*pi*fs*t+Beta);
 Uoa = Uom*sin(2*pi*fs*t-Gamma);
@@ -118,6 +119,7 @@ Uadd_temp = (max(max(Usa_ori_temp,Usb_ori_temp),Usc_ori_temp)+min(min(Usa_ori_te
 Usa_Value_Input = Usa_ori_temp-Uadd_temp;%This is a matrix of all results of Usa(Ka_1(t)*T_switch/2).
 %This is the third check point.
 %plot(t,Usa_Value_Input);
+
 %Tona_1 = t;%Intialization
 Ka_Input = t + T_switch/2;
 Ka_Value_Input = floor(Ka_Input/T_switch);%We get the value of Ka(t+Tswitch/2).
@@ -130,47 +132,52 @@ Ka_Value_Input = floor(Ka_Input/T_switch);%We get the value of Ka(t+Tswitch/2).
 %     end 
 % end
 Tona_1=(Usa>=0).*abs((T_switch*Usa_Value_Input)/(2*Uam))+(Usa<0).*(T_switch/2-abs((T_switch*Usa_Value_Input)/(2*Uam)));
-PWMa_1_contrast=t;%Initialization
-PWMa_1=t;
-PWMa_2_contrast=t;
-PWMa_2=t;
-for pointer = 1:1:length(t)
-    TimeNow = t(pointer);
-    if Usa_Value_Input(pointer)>Ua1_1(pointer) && Usa(pointer)>=0
-        PWMa_1_contrast_temp1 = 1;
-    else
-        PWMa_1_contrast_temp1 = 0;
-    end 
-    if abs(Usa_Value_Input(pointer)) > abs(Ua2_1(pointer)) && Usa(pointer)<0
-         PWMa_1_contrast_temp2 = 1;
-    else
-         PWMa_1_contrast_temp2 = 0;
-    end 
-    if (2*Ka_Value_Input(pointer)-1)*T_switch/2 - Tona_1(pointer) + T_switch/2 <= TimeNow && TimeNow <= (2*Ka_Value_Input(pointer)-1)*T_switch/2 + Tona_1(pointer) + T_switch/2
-        PWMa_1_temp1 = 1;
-    else
-        PWMa_1_temp1 = 0;
-    end
-    if Usa_Value_Input(pointer)>Ua1_2(pointer) && Usa(pointer)>=0
-        PWMa_2_contrast_temp1 = 1;
-    else 
-        PWMa_2_contrast_temp1 = 0;
-    end
-    if abs(Usa_Value_Input(pointer)) > abs(Ua2_2(pointer)) && Usa(pointer)<0
-        PWMa_2_contrast_temp2 = 1;
-    else 
-        PWMa_2_contrast_temp2 = 0;
-    end
-    if TimeNow >= Ka(pointer)*T_switch-Tona_1(pointer)+T_switch/2 && TimeNow <= Ka(pointer)*T_switch+Tona_1(pointer)+T_switch/2
-        PWMa_2_temp1 = 1;
-    else
-        PWMa_2_temp1 = 0;
-    end    
-    PWMa_1_contrast(pointer) = PWMa_1_contrast_temp1 + PWMa_1_contrast_temp2;
-    PWMa_1(pointer) = PWMa_1_temp1;
-    PWMa_2_contrast(pointer) = PWMa_2_contrast_temp1 + PWMa_2_contrast_temp2;
-    PWMa_2(pointer) = PWMa_2_temp1;
-end
+
+% PWMa_1_contrast=t;%Initialization
+% PWMa_1=t;
+% PWMa_2_contrast=t;
+% PWMa_2=t;
+% for pointer = 1:1:length(t)
+%     TimeNow = t(pointer);
+%     if Usa_Value_Input(pointer)>Ua1_1(pointer) && Usa(pointer)>=0
+%         PWMa_1_contrast_temp1 = 1;
+%     else
+%         PWMa_1_contrast_temp1 = 0;
+%     end 
+%     if abs(Usa_Value_Input(pointer)) > abs(Ua2_1(pointer)) && Usa(pointer)<0
+%          PWMa_1_contrast_temp2 = 1;
+%     else
+%          PWMa_1_contrast_temp2 = 0;
+%     end 
+%     if (2*Ka_Value_Input(pointer)-1)*T_switch/2 - Tona_1(pointer) + T_switch/2 <= TimeNow && TimeNow <= (2*Ka_Value_Input(pointer)-1)*T_switch/2 + Tona_1(pointer) + T_switch/2
+%         PWMa_1_temp1 = 1;
+%     else
+%         PWMa_1_temp1 = 0;
+%     end
+%     if Usa_Value_Input(pointer)>Ua1_2(pointer) && Usa(pointer)>=0
+%         PWMa_2_contrast_temp1 = 1;
+%     else 
+%         PWMa_2_contrast_temp1 = 0;
+%     end
+%     if abs(Usa_Value_Input(pointer)) > abs(Ua2_2(pointer)) && Usa(pointer)<0
+%         PWMa_2_contrast_temp2 = 1;
+%     else 
+%         PWMa_2_contrast_temp2 = 0;
+%     end
+%     if TimeNow >= Ka(pointer)*T_switch-Tona_1(pointer)+T_switch/2 && TimeNow <= Ka(pointer)*T_switch+Tona_1(pointer)+T_switch/2
+%         PWMa_2_temp1 = 1;
+%     else
+%         PWMa_2_temp1 = 0;
+%     end    
+%     PWMa_1_contrast(pointer) = PWMa_1_contrast_temp1 + PWMa_1_contrast_temp2;
+%     PWMa_1(pointer) = PWMa_1_temp1;
+%     PWMa_2_contrast(pointer) = PWMa_2_contrast_temp1 + PWMa_2_contrast_temp2;
+%     PWMa_2(pointer) = PWMa_2_temp1;
+% end
+PWMa_1_contrast=((Usa_Value_Input>Ua1_1)&(Usa>=0))*1+((abs(Usa_Value_Input)>abs(Ua2_1))&(Usa<0))*1;
+PWMa_1=(((2*Ka_Value_Input-1)*T_switch/2-Tona_1+ T_switch/2 <= t)&(t<=(2*Ka_Value_Input-1)*T_switch/2+Tona_1+T_switch/2))*1;
+PWMa_2_contrast=((Usa_Value_Input>Ua1_2)&(Usa>=0))*1+((abs(Usa_Value_Input)>abs(Ua2_2))&(Usa<0))*1;
+PWMa_2=((t>=Ka*T_switch-Tona_1+T_switch/2)&(t<=Ka*T_switch+Tona_1+T_switch/2))*1;
 %We finished generating the PWM waves
 
 %Generate the UA
