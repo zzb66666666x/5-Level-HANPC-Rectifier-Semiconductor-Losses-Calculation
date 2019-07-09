@@ -181,30 +181,31 @@ PWMa_2=((t>=Ka*T_switch-Tona_1+T_switch/2)&(t<=Ka*T_switch+Tona_1+T_switch/2))*1
 %We finished generating the PWM waves
 
 %Generate the UA
-UA = t;
-for pointer = 1:1:length(t)
-    if PWMa_1(pointer)>0 && Usa(pointer)>=0
-        UA_temp1 = Ud/2;
-    else
-        UA_temp1 = 0;
-    end 
-    if PWMa_2(pointer)>0 && Usa(pointer)>=0
-        UA_temp2 = Ud/2;
-    else
-        UA_temp2 = 0;
-    end 
-    if PWMa_2(pointer)<=0 && Usa(pointer)< 0
-        UA_temp3 = -Ud/2;
-    else
-        UA_temp3 = 0;
-    end     
-    if PWMa_1(pointer)<=0 && Usa(pointer)<0
-        UA_temp4 = -Ud/2;
-    else
-        UA_temp4 = 0;
-    end 
-    UA(pointer) = UA_temp1 + UA_temp2 + UA_temp3 + UA_temp4;
-end
+% UA = t;
+% for pointer = 1:1:length(t)
+%     if PWMa_1(pointer)>0 && Usa(pointer)>=0
+%         UA_temp1 = Ud/2;
+%     else
+%         UA_temp1 = 0;
+%     end 
+%     if PWMa_2(pointer)>0 && Usa(pointer)>=0
+%         UA_temp2 = Ud/2;
+%     else
+%         UA_temp2 = 0;
+%     end 
+%     if PWMa_2(pointer)<=0 && Usa(pointer)< 0
+%         UA_temp3 = -Ud/2;
+%     else
+%         UA_temp3 = 0;
+%     end     
+%     if PWMa_1(pointer)<=0 && Usa(pointer)<0
+%         UA_temp4 = -Ud/2;
+%     else
+%         UA_temp4 = 0;
+%     end 
+%     UA(pointer) = UA_temp1 + UA_temp2 + UA_temp3 + UA_temp4;
+% end
+UA=((PWMa_1>0)&(Usa>=0))*Ud/2+((PWMa_2>0)&(Usa>=0))*Ud/2+((PWMa_2<=0)&(Usa<0))*(-Ud/2)+((PWMa_1<=0)&(Usa<0))*(-Ud/2);
 %We finished generating the UA(t)
 %This is the forth check point;
 %plot(t,UA);
