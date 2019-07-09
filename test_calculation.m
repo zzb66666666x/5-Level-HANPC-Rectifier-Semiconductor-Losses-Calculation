@@ -217,22 +217,22 @@ Ta3_1 = (2*Ka_Value_Input-1)*T_switch/2 + Tona_1 + T_switch/2;
 Ta2_2 = Ka*T_switch-Tona_1 + T_switch/2;
 Ta3_2 = Ka*T_switch+Tona_1 + T_switch/2;
 %Finished calculating the time needed.
-%Intialize the I_positive and the I_negative.
-I_positive_Ta31 = t;
-I_positive_Ta32 = t;
-I_positive_Ta21 = t;
-I_positive_Ta22 = t;
-I_negative_Ta21 = t;
-I_negative_Ta22 = t;
-I_negative_Ta31 = t;
-I_negative_Ta32 = t;
-I_positive = IL;
-I_negative = IL;
-%Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
 I_temp_Ta21 = Iom*sin(2*pi*fs*Ta2_1+Beta);
 I_temp_Ta22 = Iom*sin(2*pi*fs*Ta2_2+Beta);
 I_temp_Ta31 = Iom*sin(2*pi*fs*Ta3_1+Beta);
 I_temp_Ta32 = Iom*sin(2*pi*fs*Ta3_2+Beta);
+%Intialize the I_positive and the I_negative.
+I_positive_Ta31 = I_temp_Ta31;
+I_positive_Ta32 = I_temp_Ta32;
+I_positive_Ta21 = I_temp_Ta21;
+I_positive_Ta22 = I_temp_Ta22;
+I_negative_Ta21 = I_temp_Ta21;
+I_negative_Ta22 = I_temp_Ta22;
+I_negative_Ta31 = I_temp_Ta31;
+I_negative_Ta32 = I_temp_Ta32;
+I_positive = IL;
+I_negative = IL;
+%Calculate the loss. Note: IL = Iom*sin(2*pi*fs*t+Beta);
 for pointer = 1:1:length(t)
     if I_temp_Ta21(pointer)>0
         I_positive_Ta21(pointer) = I_temp_Ta21(pointer);
