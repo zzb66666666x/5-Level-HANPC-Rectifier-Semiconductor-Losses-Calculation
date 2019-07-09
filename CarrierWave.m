@@ -22,5 +22,6 @@ for i = 1:1:t_range
        Ua2_1(i) = temp1 - Uam;
        Ua1_2(i) = temp2;
        Ua2_2(i) = temp2 - Uam;
+   end
 end
 end
